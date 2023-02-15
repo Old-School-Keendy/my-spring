@@ -6,7 +6,28 @@ package com.wdz.test;
  * @description
  */
 public class UserService {
-    public String queryById(Long id){
-        return "模拟调用UserService#queryById方法: " + "id: " + id;
+
+    private String uId;
+
+    private UserDao userDao;
+
+    public void queryUserInfo() {
+        System.out.println("查询用户信息：" + userDao.queryUserName(uId));
+    }
+
+    public String getuId() {
+        return uId;
+    }
+
+    public void setuId(String uId) {
+        this.uId = uId;
+    }
+
+    public UserDao getUserDao() {
+        return userDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 }
