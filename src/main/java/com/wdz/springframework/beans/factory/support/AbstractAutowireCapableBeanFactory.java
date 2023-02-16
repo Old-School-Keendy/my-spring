@@ -30,6 +30,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         Object bean = null;
         // 1. 生成带参数的bean
         try {
+            // 创建实例
             bean = createBeanInstance(beanDefinition, beanName, args);
             // 填充属性
             applyPropertyValues(beanName, bean, beanDefinition);
