@@ -1,9 +1,14 @@
-package com.wdz.test;
+package com.wdz.springframework.bean;
 
 /**
- * @author wangdezhao
- * @date 2023/2/14
- * @description
+ *
+ *
+ *
+ * 作者：DerekYRC https://github.com/DerekYRC/mini-spring
+ * @description 模拟用户服务类
+ * @date 2022/03/09
+ *
+ *
  */
 public class UserService {
 
@@ -11,8 +16,8 @@ public class UserService {
 
     private UserDao userDao;
 
-    public void queryUserInfo() {
-        System.out.println("查询用户信息：" + userDao.queryUserName(uId));
+    public String queryUserInfo() {
+        return userDao.queryUserName(uId);
     }
 
     public String getuId() {
