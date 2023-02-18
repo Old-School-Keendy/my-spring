@@ -31,12 +31,6 @@ import com.wdz.springframework.core.io.DefaultResourceLoader;
  */
 public abstract class AbstractApplicationContext extends DefaultResourceLoader implements ConfigurableApplicationContext {
 
-
-
-    protected abstract void refreshBeanFactory();
-
-    protected abstract ConfigurableListableBeanFactory getBeanFactory();
-
     /**
      * 核心模版方法
      * @throws BeansException
@@ -58,6 +52,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         // 5. 提前实例化单例Bean对象
         beanFactory.preInstantiateSingletons();
     }
+
+    protected abstract void refreshBeanFactory();
+
+    protected abstract ConfigurableListableBeanFactory getBeanFactory();
 
     /**
      * 实例化之前,执行增强
