@@ -1,6 +1,7 @@
 package com.wdz.springframework.beans.factory;
 
 import com.wdz.springframework.beans.BeansException;
+import com.wdz.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import com.wdz.springframework.beans.factory.config.BeanDefinition;
 import com.wdz.springframework.beans.factory.config.ConfigurableBeanFactory;
 
@@ -16,8 +17,10 @@ import com.wdz.springframework.beans.factory.config.ConfigurableBeanFactory;
  *  /CodeDesignTutorials
  *
  */
-public interface ConfigurableListableBeanFactory extends ListableBeanFactory, ConfigurableBeanFactory {
+public interface ConfigurableListableBeanFactory extends ListableBeanFactory, AutowireCapableBeanFactory, ConfigurableBeanFactory {
 
     BeanDefinition getBeanDefinition(String beanName) throws BeansException;
+
+    void preInstantiateSingletons() throws BeansException;
 
 }

@@ -1,8 +1,13 @@
 package com.wdz.springframework.beans.factory.support;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.wdz.springframework.beans.BeansException;
 import com.wdz.springframework.beans.factory.BeanFactory;
 import com.wdz.springframework.beans.factory.config.BeanDefinition;
+import com.wdz.springframework.beans.factory.config.BeanPostProcessor;
+import com.wdz.springframework.beans.factory.config.ConfigurableBeanFactory;
 import com.wdz.springframework.beans.factory.config.DefaultSingletonBeanRegistry;
 
 /**
@@ -10,7 +15,11 @@ import com.wdz.springframework.beans.factory.config.DefaultSingletonBeanRegistry
  * @date 2023/2/14
  * @description
  */
-public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory {
+public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
+
+    /** BeanPostProcessors to apply in createBean */
+    private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
+
     /**
      * 获得单例bean,如果不存在就创建单例bean,通过模板模式由子类实现
      *
@@ -46,4 +55,13 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
     protected abstract BeanDefinition getBeanDefinition(String beanName);
 
+    @Override
+    public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor){
+        this.beanPostProcessors.remove(beanPostProcessor);
+        this.beanPostProcessors.add(beanPostProcessor);
+    }
+
+    public List<BeanPostProcessor> getBeanPostProcessors() {
+        return beanPostProcessors;
+    }
 }

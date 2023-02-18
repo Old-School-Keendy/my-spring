@@ -1,23 +1,35 @@
 package com.wdz.springframework.bean;
 
 /**
- *
- *
- *
  * 作者：DerekYRC https://github.com/DerekYRC/mini-spring
+ *
  * @description 模拟用户服务类
  * @date 2022/03/09
- *
- *
  */
 public class UserService {
-
     private String uId;
-
+    private String company;
+    private String location;
     private UserDao userDao;
 
     public String queryUserInfo() {
-        return userDao.queryUserName(uId);
+        return userDao.queryUserName(uId) + ", 公司：" + company + ", 地点" + location;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getuId() {

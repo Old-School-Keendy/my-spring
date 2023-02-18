@@ -6,7 +6,9 @@ import cn.hutool.core.bean.BeanUtil;
 import com.wdz.springframework.beans.BeansException;
 import com.wdz.springframework.beans.PropertyValue;
 import com.wdz.springframework.beans.PropertyValues;
+import com.wdz.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import com.wdz.springframework.beans.factory.config.BeanDefinition;
+import com.wdz.springframework.beans.factory.config.BeanPostProcessor;
 import com.wdz.springframework.beans.factory.config.BeanReference;
 
 /**
@@ -14,7 +16,7 @@ import com.wdz.springframework.beans.factory.config.BeanReference;
  * @date 2023/2/14
  * @description
  */
-public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory {
+public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
     private InstantiationStrategy instantiationStrategy = new CglibSubclassingInstantiationStrategy();
 
     /**
@@ -87,5 +89,34 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         this.instantiationStrategy = instantiationStrategy;
     }
 
+
+
+    @Override
+    public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName) throws BeansException{
+        Object result = existingBean;
+        for (BeanPostProcessor processor : getBeanPostProcessors()) {
+            Object current = processor.postProcessBeforeInitialization(result, beanName);
+            if (null == current) {
+                return result;
+            }
+            result = current;
+        }
+        return result;
+    }
+
+
+
+    @Override
+    public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName) throws BeansException{
+        Object result = existingBean;
+        for (BeanPostProcessor processor : getBeanPostProcessors()) {
+            Object current = processor.postProcessAfterInitialization(result, beanName);
+            if (null == current) {
+                return result;
+            }
+            result = current;
+        }
+        return result;
+    }
 
 }

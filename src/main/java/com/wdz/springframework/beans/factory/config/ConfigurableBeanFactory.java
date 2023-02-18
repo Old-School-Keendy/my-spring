@@ -1,5 +1,6 @@
 package com.wdz.springframework.beans.factory.config;
 import com.wdz.springframework.beans.factory.HierarchicalBeanFactory;
+import com.wdz.springframework.beans.factory.ListableBeanFactory;
 
 /**
  *
@@ -14,10 +15,12 @@ import com.wdz.springframework.beans.factory.HierarchicalBeanFactory;
  *
  *
  */
-public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, SingletonBeanRegistry {
+public interface ConfigurableBeanFactory extends ListableBeanFactory, HierarchicalBeanFactory, SingletonBeanRegistry {
 
     String SCOPE_SINGLETON = "singleton";
 
     String SCOPE_PROTOTYPE = "prototype";
+
+    void addBeanPostProcessor(BeanPostProcessor beanPostProcessor);
 
 }

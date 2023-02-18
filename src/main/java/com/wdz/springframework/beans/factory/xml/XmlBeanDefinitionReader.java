@@ -56,6 +56,13 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         loadBeanDefinitions(resource);
     }
 
+    @Override
+    public void loadBeanDefinitions(String... locations) throws BeansException {
+        for (String location : locations) {
+            loadBeanDefinitions(location);
+        }
+    }
+
     /**
      * LoadBeanDefinitions具体实现逻辑,Spring不希望外部调用到doXxx()的方法
      */
