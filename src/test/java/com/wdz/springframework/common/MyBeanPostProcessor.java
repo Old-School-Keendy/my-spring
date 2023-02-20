@@ -14,6 +14,7 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        System.out.println("beanName: " + beanName+ " postProcessBeforeInitialization 方法执行!");
         if ("userService".equals(beanName)) {
             UserService userService = (UserService) bean;
             userService.setLocation("改为：北京");
@@ -23,6 +24,7 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        System.out.println("beanName: " + beanName+ " postProcessAfterInitialization 方法执行!");
         return bean;
     }
 }
