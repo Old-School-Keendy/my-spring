@@ -9,6 +9,7 @@ import com.wdz.springframework.beans.factory.config.BeanDefinition;
 import com.wdz.springframework.beans.factory.config.BeanPostProcessor;
 import com.wdz.springframework.beans.factory.config.ConfigurableBeanFactory;
 import com.wdz.springframework.beans.factory.config.DefaultSingletonBeanRegistry;
+import com.wdz.springframework.utils.ClassUtils;
 
 /**
  * @author wangdezhao
@@ -16,6 +17,9 @@ import com.wdz.springframework.beans.factory.config.DefaultSingletonBeanRegistry
  * @description
  */
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
+
+    /** ClassLoader to resolve bean class names with, if necessary */
+    private ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();
 
     /** BeanPostProcessors to apply in createBean */
     private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
@@ -63,5 +67,9 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
     public List<BeanPostProcessor> getBeanPostProcessors() {
         return beanPostProcessors;
+    }
+
+    public ClassLoader getBeanClassLoader() {
+        return this.beanClassLoader;
     }
 }
