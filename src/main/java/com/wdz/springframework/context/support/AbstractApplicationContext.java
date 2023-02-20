@@ -11,28 +11,18 @@ import com.wdz.springframework.context.ConfigurableApplicationContext;
 import com.wdz.springframework.core.io.DefaultResourceLoader;
 
 /**
- *
- *
- *
- *
- * AbstractApplicationContext 继承 DefaultResourceLoader 是为了处理 spring.xml 配置资源的加载。
- * 之后是在 refresh() 定义实现过程，包括：
- *      1. 创建 BeanFactory，并加载 BeanDefinition
- *      2. 获取 BeanFactory
- *      3. 在 Bean 实例化之前，执行 BeanFactoryPostProcessor (Invoke factory processors registered as beans in the context.)
- *      4. BeanPostProcessor 需要提前于其他 Bean 对象实例化之前执行注册操作
- *      5. 提前实例化单例Bean对象
- * 另外把定义出来的抽象方法，refreshBeanFactory()、getBeanFactory() 由后面的继承此抽象类的其他抽象类实现。
- *
+ * AbstractApplicationContext 继承 DefaultResourceLoader 是为了处理 spring.xml 配置资源的加载。 之后是在 refresh() 定义实现过程，包括： 1. 创建 BeanFactory，并加载 BeanDefinition 2. 获取
+ * BeanFactory 3. 在 Bean 实例化之前，执行 BeanFactoryPostProcessor (Invoke factory processors registered as beans in the context.) 4. BeanPostProcessor
+ * 需要提前于其他 Bean 对象实例化之前执行注册操作 5. 提前实例化单例Bean对象 另外把定义出来的抽象方法，refreshBeanFactory()、getBeanFactory() 由后面的继承此抽象类的其他抽象类实现。
  *
  * @author wangdezhao
- * @date 2023/2/18
- * 抽象实现
+ * @date 2023/2/18 抽象实现
  */
 public abstract class AbstractApplicationContext extends DefaultResourceLoader implements ConfigurableApplicationContext {
 
     /**
      * 核心模版方法
+     *
      * @throws BeansException
      */
     @Override
@@ -59,27 +49,38 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
     /**
      * 实例化之前,执行增强
+     *
      * @param beanFactory
      */
-    private void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory){
+    private void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
         Map<String, BeanFactoryPostProcessor> beanFactoryPostProcessorMap = beanFactory.getBeansOfType(BeanFactoryPostProcessor.class);
         for (BeanFactoryPostProcessor beanFactoryPostProcessor : beanFactoryPostProcessorMap.values()) {
             beanFactoryPostProcessor.postProcessBeanFactory(beanFactory);
         }
-    };
+    }
+
+    ;
 
     /**
      * 注册
      */
     private void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory) {
         Map<String, BeanPostProcessor> beanPostProcessorMap = beanFactory.getBeansOfType(BeanPostProcessor.class);
-                for (BeanPostProcessor beanPostProcessor : beanPostProcessorMap.values()) {
-                    beanFactory.addBeanPostProcessor(beanPostProcessor);
-                }
+        for (BeanPostProcessor beanPostProcessor : beanPostProcessorMap.values()) {
+            beanFactory.addBeanPostProcessor(beanPostProcessor);
+        }
+    }
+
+    @Override
+    public void registerShutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread(this::close));
     }
 
 
-
+    @Override
+    public void close() throws BeansException {
+        getBeanFactory().destroySingletons();
+    }
 
     @Override
     public <T> Map<String, T> getBeansOfType(Class<T> type) throws BeansException {
@@ -105,5 +106,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     public <T> T getBean(String name, Class<T> requiredType) throws BeansException {
         return getBeanFactory().getBean(name, requiredType);
     }
+
 
 }
