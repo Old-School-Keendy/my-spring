@@ -1,0 +1,5 @@
+com/wdz/springframework/ApiTest.class
+com/wdz/springframework/common/MyBeanFactoryPostProcessor.class
+com/wdz/springframework/common/MyBeanPostProcessor.class
+com/wdz/springframework/bean/UserService.class
+com/wdz/springframework/bean/UserDao.class
