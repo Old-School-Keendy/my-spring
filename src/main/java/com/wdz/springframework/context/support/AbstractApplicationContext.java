@@ -6,7 +6,6 @@ import com.wdz.springframework.beans.BeansException;
 import com.wdz.springframework.beans.factory.ConfigurableListableBeanFactory;
 import com.wdz.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import com.wdz.springframework.beans.factory.config.BeanPostProcessor;
-import com.wdz.springframework.beans.factory.config.ConfigurableBeanFactory;
 import com.wdz.springframework.context.ConfigurableApplicationContext;
 import com.wdz.springframework.core.io.DefaultResourceLoader;
 
