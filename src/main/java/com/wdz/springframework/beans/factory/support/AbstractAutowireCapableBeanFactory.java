@@ -18,6 +18,7 @@ import com.wdz.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import com.wdz.springframework.beans.factory.config.BeanDefinition;
 import com.wdz.springframework.beans.factory.config.BeanPostProcessor;
 import com.wdz.springframework.beans.factory.config.BeanReference;
+import com.wdz.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 
 /**
  * @author wangdezhao
@@ -40,6 +41,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         Object bean = null;
         // 1. 生成带参数的bean
         try {
+            // 判断是否返回代理 Bean 对象
+            bean = resolveBeforeInstantiation(beanName, beanDefinition);
             // 创建实例
             bean = createBeanInstance(beanDefinition, beanName, args);
             // 填充属性
@@ -60,6 +63,26 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             registerSingleton(beanName, bean);
         }
         return bean;
+    }
+
+    private Object resolveBeforeInstantiation(String beanName, BeanDefinition beanDefinition) {
+        Object bean = applyBeanPostProcessorsBeforeInstantiation(beanDefinition.getBeanClass(), beanName);
+        if (null != bean) {
+            bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
+        }
+        return bean;
+    }
+
+    protected Object applyBeanPostProcessorsBeforeInstantiation(Class beanClass, String beanName) {
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+            if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+                Object result = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessBeforeInstantiation(beanClass, beanName);
+                if (null != result) {
+                    return result;
+                }
+            }
+        }
+        return null;
     }
 
     protected void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition beanDefinition) {

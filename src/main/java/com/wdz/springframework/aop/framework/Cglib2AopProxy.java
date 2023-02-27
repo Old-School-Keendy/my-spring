@@ -20,6 +20,7 @@ public class Cglib2AopProxy implements AopProxy  {
 
     @Override
     public Object getProxy() {
+        //通过动态代理类执行 Advice
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(advised.getTargetSource().getTarget().getClass());
         enhancer.setInterfaces(advised.getTargetSource().getTargetClass());
